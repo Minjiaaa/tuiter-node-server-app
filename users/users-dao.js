@@ -1,5 +1,8 @@
 // 7.2 Implementing a user data model
-let users = [];
+import people from './users.js'
+let users = people
+// let users = [];
+
 
 export const findAllUsers = () => users;
 

@@ -4,15 +4,24 @@ let tuits = posts;
 const createTuit = (req, res) => {
     const newTuit = req.body;                   // retrieve data from HTTP body
     newTuit._id = (new Date()).getTime()+'';    // add _id field as a time stamp
+    newTuit.image = "../images/NASA.png";
     newTuit.likes = 0;                          // initialize likes counter
     newTuit.liked = false;                      // initialize liked flag
+    newTuit.replies = 0;
+    newTuit.retuits = 0;
+    newTuit.disliked = false;
+    newTuit.dislikes = 0;
+    newTuit.handle = "@nasa";
+    newTuit.time = "just now";
     tuits.push(newTuit);                        // append new tuit to tuits array
     res.json(newTuit);                          // respond with new tuit
 }                                               // next chapter will store in database instead
   
 
 // 5.1 Retrieving data from a RESTful Web service API
-const findTuits = (req, res) => res.json(tuits);
+const findTuits = (req, res) => {
+    res.json(tuits)
+}
 
 const deleteTuit = (req, res) => {
     const tuitdIdToDelete = req.params.tid;     // retrieve the ID of the tuit we want to remove
