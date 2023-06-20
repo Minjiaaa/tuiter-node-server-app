@@ -6,7 +6,11 @@ import UserController from "./users/users-controller.js"        // import contro
 import AuthController from "./users/auth-controller.js";        // make sure to include the extension
 import TuitsController from "./controllers/tuits/tuits-controller.js";
 import session from "express-session";                          // import new server session library
+import mongoose from "mongoose";                                // load the mongoose library
+const CONNECTION_STRING = process.env.DB_CONNECTION_STRING || 'mongodb://127.0.0.1:27017/tuiter';
+mongoose.connect(CONNECTION_STRING);
 
+// mongoose.connect("mongodb://127.0.0.1:27017/tuiter");           // connect to the tuiter database
 // const express = require('express')
 const app = express()
 
