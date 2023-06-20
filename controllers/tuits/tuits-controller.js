@@ -1,9 +1,10 @@
-import posts from "./tuits.js";
-let tuits = posts;
+// import posts from "./tuits.js";
+// let tuits = posts;
+import * as tuitsDao from './tuits-dao.js'      // import the dao
 
-const createTuit = (req, res) => {
+const createTuit = async (req, res) => {        // now it's asynchronous function
     const newTuit = req.body;                   // retrieve data from HTTP body
-    newTuit._id = (new Date()).getTime()+'';    // add _id field as a time stamp
+    // newTuit._id = (new Date()).getTime()+'';    // add _id field as a time stamp  // ID created by database instead
     newTuit.image = "../images/NASA.png";
     newTuit.likes = 0;                          // initialize likes counter
     newTuit.liked = false;                      // initialize liked flag
@@ -13,29 +14,37 @@ const createTuit = (req, res) => {
     newTuit.dislikes = 0;
     newTuit.handle = "@nasa";
     newTuit.time = "just now";
-    tuits.push(newTuit);                        // append new tuit to tuits array
-    res.json(newTuit);                          // respond with new tuit
-}                                               // next chapter will store in database instead
+    // tuits.push(newTuit);                        // append new tuit to tuits array // not using array anymore
+    const insertedTuit = await tuitsDao.createTuit(newTuit);    // actual tuit inserted in database with DAO's createTuit
+    res.json(insertedTuit);                        // respond with actual inserted tuit
+    // res.json(newTuit);                          // respond with new tuit
+}                                                  // next chapter will store in database instead
   
 
 // 5.1 Retrieving data from a RESTful Web service API
-const findTuits = (req, res) => {
+const findTuits = async (req, res) => {                 // now it's asynchronous function
+    const tuits = await tuitsDao.findTuits();           // retrieve tuits from database
     res.json(tuits)
 }
 
-const deleteTuit = (req, res) => {
+const deleteTuit = async (req, res) => {
     const tuitdIdToDelete = req.params.tid;     // retrieve the ID of the tuit we want to remove
-    tuits = tuits.filter((t) =>                 // filter out the tuit from the tuits array
-        t._id !== tuitdIdToDelete);
-    res.sendStatus(200);                        // respond with success
+    const status = await tuitsDao.deleteTuit(tuitdIdToDelete);  // success/failure status deleting record from database
+    // tuits = tuits.filter((t) => t._id !== tuitdIdToDelete);     // filter out the tuit from the tuits array // no longer using array
+    res.json(status);                               // respond with status object
+    // res.sendStatus(200);                         // respond with success
 }
 
-const updateTuit = (req, res) => {
-    const tuitdId = req.params.tid;                             // get ID of tuit to update from path
-    const updates = req.body;                                   // get updates from HTTP body
-    const tuitIndex = tuits.findIndex((t) => t._id === tuitdId) // find index of tuit to update in the tuits array
-    tuits[tuitIndex] = {...tuits[tuitIndex], ...updates};       // update the element in tuits array merging old tuit 
-    res.sendStatus(200);                                        // with updates, and respond with success
+const updateTuit = async (req, res) => {
+    const tuitdId = req.params.tid;                                    // get ID of tuit to update from path
+    const updates = req.body;                                          // get updates from HTTP body
+    // no longer using array
+        // const tuitIndex = tuits.findIndex((t) => t._id === tuitdId) // find index of tuit to update in the tuits array
+    // no longer using array
+        // tuits[tuitIndex] = {...tuits[tuitIndex], ...updates};        // update the element in tuits array merging old tuit 
+    const status = await tuitsDao.updateTuit(tuitdId, updates);         // status reports success or failure to update document in database
+    res.json(status);                                                   // respond with status object
+    // res.sendStatus(200);                                             // with updates, and respond with success
 }
   
 
