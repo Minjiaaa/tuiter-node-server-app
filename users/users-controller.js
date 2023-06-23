@@ -2,8 +2,9 @@ import people from './users.js'         // import the array of users. Include th
 let users = people
 
 const UserController = (app) => {       // use express instance app to declare HTTP GET
-   app.get('/api/users', findUsers)     // request pattern /api/users to call a function
+   //app.get('/api/users', findUsers)     // request pattern /api/users to call a function
    app.get('/api/users/:uid', findUserById);    // map path pattern to handler function
+   console.log("Inside userController fumction")
    app.post('/api/users', createUser);          // map URL pattern to handler function
    app.delete('/api/users/:uid', deleteUser);   // map URL pattern to handler function
    app.put('/api/users/:uid', updateUser);      // 4.5 Updating data in a Web server with Postman
@@ -14,6 +15,7 @@ const createUser = (req, res) => {              // function invoked if URL match
     const newUser = req.body;                   // extract new user from BODY in request
     newUser._id = (new Date()).getTime() + '';  // add an _id property with unique timestamp
     users.push(newUser);                        // append new user to users array
+    console.log("Inside user backend" + newUser);
     res.json(newUser);                          // respond with new user to client
 }
 

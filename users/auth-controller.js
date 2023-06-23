@@ -22,10 +22,11 @@ const AuthController = (app) => {
     const login = (req, res) => {
         const username = req.body.username;
         const password = req.body.password;
-        const user = usersDao.findUserByCredentials(username, password);
+        const user = usersDao.findUserByCredentials(username, password); // dao->mongodb
         if (user) {
-            // req.session["currentUser"] = user;
-            currentUserVar = user
+            req.session["currentUser"] = user;
+            // currentUserVar = user
+            console.log("request currentUser" + req.session["currentUser"]);
             res.json(user);
         } else {
             res.sendStatus(404);
@@ -33,8 +34,8 @@ const AuthController = (app) => {
     };
      
     const profile = (req, res) => {
-        // const currentUser = req.session["currentUser"]; 啥意思
-        const currentUser = currentUserVar
+        const currentUser = req.session["currentUser"]; //啥意思
+        // const currentUser = currentUserVar
         if (!currentUser) {
             res.sendStatus(404);
             return;

@@ -6,7 +6,9 @@ import UserController from "./users/users-controller.js"        // import contro
 import AuthController from "./users/auth-controller.js";        // make sure to include the extension
 import TuitsController from "./controllers/tuits/tuits-controller.js";
 import session from "express-session";                          // import new server session library
-
+import mongoose from "mongoose";
+const CONNECTION_STRING = process.env.DB_CONNECTION_STRING || 'mongodb://127.0.0.1:27017/tuiter';
+mongoose.connect(CONNECTION_STRING);
 // const express = require('express')
 const app = express()
 
@@ -14,7 +16,7 @@ const app = express()
 app.use(
     cors({      
         credentials: true,                                          // restrict cross origin resource sharing to the react application
-        origin: ["http://localhost:3000","https://a5--comforting-pie-745b0e.netlify.app"]    //  origin : "http://localhost:3000",
+        origin: ["http://localhost:3000","https://a6--comforting-pie-745b0e.netlify.app"]    //  origin : "http://localhost:3000",
     })
 );
 
